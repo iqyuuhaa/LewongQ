@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "538445436585",
+    "project_id": "lewongq",
+    "storage_bucket": "lewongq.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538445436585:android:c26e4191525c9d1e53bbb8",
+        "android_client_info": {
+          "package_name": "com.example.lewong_q_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "538445436585-gls7936i416e0j4tf836ra50b8mkphma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzyZqzq5_3kTRKot-BD_OMLBg-afiU96I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "538445436585-gls7936i416e0j4tf836ra50b8mkphma.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
