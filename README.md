@@ -1,4 +1,4 @@
-# lewong_q_app
+# LewongQ
 
 A new Flutter project.
 
