@@ -1,13 +1,14 @@
-import 'package:lewong_q_app/pages/getting-started.dart';
-import 'package:lewong_q_app/pages/login.dart';
-import 'package:lewong_q_app/pages/splash.dart';
+import 'package:lewong_q_app/views/getting-started.dart';
+import 'package:lewong_q_app/views/splash.dart';
+
+import 'package:lewong_q_app/wrapper.dart';
 
 const String SPLASH_ROUTE = "/";
+const String WRAPPER = "/wrapper";
 const String GETTING_STARTED = "/getting-started";
-const String LOGIN_ROUTE = "/login";
 
 final routes = {
   SPLASH_ROUTE: (context) => SplashScreen(),
   GETTING_STARTED: (context) => GettingStartedScreen(),
-  LOGIN_ROUTE: (context) => LoginPage(),
+  WRAPPER: (context) => Wrapper(),
 };

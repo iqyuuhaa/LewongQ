@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../services/auth_service.dart';
+import 'package:lewong_q_app/models/auth.dart';
 
-class IndexPage extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   final FirebaseUser user;
-  IndexPage(this.user);
+
+  HomeScreen(this.user);
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +18,9 @@ class IndexPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Text(user.uid),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () async {
-                await AuthService.signOut();
+                await Auth.signOut();
               },
               child: Text('Sign Out'),
             ),
