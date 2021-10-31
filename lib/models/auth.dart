@@ -1,13 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Auth {
   static FirebaseAuth _auth = FirebaseAuth.instance;
+  static GoogleSignIn _googleSignIn = new GoogleSignIn();
 
   // Anonymous Auth Method
   static Future signInAnonymous() async {
     try {
-      AuthResult result = await _auth.signInAnonymously();
-      FirebaseUser firebaseUser = result.user;
+      UserCredential result = await _auth.signInAnonymously();
+      User? firebaseUser = result.user;
 
       return firebaseUser;
     } catch (e) {
@@ -19,18 +21,26 @@ class Auth {
   // /Anonymous Auth Method
 
   // Google Auth Method
-  // static Future signInWithGoogle() async {
-  //   try {
-  //     AuthResult result = await _auth.sign
-  //     FirebaseUser firebaseUser = result.user;
+  static Future signInWithGoogle() async {
+    try {
+      GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
-  //     return firebaseUser;
-  //   } catch (e) {
-  //     print(e.toString());
+      final googleAuth = await googleUser!.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-  //     return null;
-  //   }
-  // }
+      UserCredential result = await _auth.signInWithCredential(credential);
+      User? firebaseUser = result.user;
+
+      return firebaseUser;
+    } catch (e) {
+      print(e.toString());
+
+      return null;
+    }
+  }
   // /Google Auth Method
 
   // Sign Out Method
@@ -39,12 +49,7 @@ class Auth {
   }
   // /Sign Out Method
 
-  // static Future<User> getUser(int uid) async {
-  //   String
-  // }
-
-  static Stream<FirebaseUser> get firebaseUserStream =>
-      _auth.onAuthStateChanged;
+  static Stream<User?> get authUser => _auth.authStateChanges();
 }
 
-class UninitializedUser extends Auth {}
+class UninitializedAuth extends Auth {}

@@ -6,9 +6,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:lewong_q_app/models/auth.dart';
 import 'package:lewong_q_app/routes/routes.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
 
   runApp(LewongQApp());
 }
@@ -16,15 +16,12 @@ void main() {
 class LewongQApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider.value(
-      value: Auth.firebaseUserStream,
-      child: MaterialApp(
-        initialRoute: SPLASH_ROUTE,
-        routes: routes,
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
-        ),
+    return MaterialApp(
+      initialRoute: SPLASH_ROUTE,
+      routes: routes,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
       ),
     );
   }

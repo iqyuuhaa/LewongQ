@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:lewong_q_app/models/auth.dart';
 
@@ -12,16 +13,18 @@ class SignInScreen extends StatelessWidget {
       body: Center(
         child: Column(
           children: <Widget>[
-            ElevatedButton(
+            ElevatedButton.icon(
               onPressed: () {},
-              child: Text('Sign In with Google'),
+              icon: FaIcon(FontAwesomeIcons.google),
+              label: Text('Sign In with Google'),
             ),
-            ElevatedButton(
+            ElevatedButton.icon(
               onPressed: () async {
                 await Auth.signInAnonymous();
               },
-              child: Text('Sign In Anonymous'),
-            ),
+              icon: FaIcon(FontAwesomeIcons.question),
+              label: Text('Sign In Anonymously'),
+            )
           ],
         ),
       ),
