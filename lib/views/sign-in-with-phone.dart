@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:lewong_q_app/services/auth.dart';
 import 'package:lewong_q_app/routes/routes.dart';
 
-class SignInScreen extends StatelessWidget {
+import 'package:lewong_q_app/services/auth.dart';
+import 'package:lewong_q_app/models/verification-phone.dart';
+
+class SignInWithPhone extends StatefulWidget {
+  const SignInWithPhone({ Key? key }) : super(key: key);
+
+  @override
+  _SignInWithPhoneState createState() => _SignInWithPhoneState();
+}
+
+class _SignInWithPhoneState extends State<SignInWithPhone> {
   double getSmallestDiameter(BuildContext context) =>
       MediaQuery.of(context).size.width * 2 / 3;
   double getBiggestDiameter(BuildContext context) =>
@@ -12,6 +20,8 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _controller = TextEditingController(text: '');
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -62,38 +72,38 @@ class SignInScreen extends StatelessWidget {
           Container(
             child: Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Spacer(),
-                  new Image.asset('assets/logo.png'),
                   Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 25,),
+                    margin: EdgeInsets.only(top: 10,),
                     child: Text(
-                      'Welcome to LewongQ',
+                      'Phone Number Authentication',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.pushNamed(context, SIGN_IN_WITH_PHONE);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xff0369B3),
-                      minimumSize: Size(346, 40),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(100.0),
+                  Container(
+                    padding: EdgeInsets.all(25),
+                    child: TextField(
+                      maxLength: 12,
+                      keyboardType: TextInputType.number,
+                      controller: _controller,
+                      decoration: InputDecoration(
+                        hintText: 'Phone Number',
+                        prefix: Padding(
+                          padding: EdgeInsets.all(4),
+                          child: Text('+62'),
+                        ),
                       ),
-                    ),
-                    icon: FaIcon(FontAwesomeIcons.phone),
-                    label: Text('Sign In with Phone Number'),
+                    )
                   ),
-                  ElevatedButton.icon(
+                  ElevatedButton(
                     onPressed: () async {
-                      await Auth.signInWithGoogle();
+                      String verificationId = await Auth.verifyPhone(_controller.text);
+                      Navigator.pushNamed(context, VERIFICATION_PHONE_TOKEN, arguments: VerificationPhoneArguments(_controller.text, verificationId));
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xff0369B3),
@@ -102,22 +112,7 @@ class SignInScreen extends StatelessWidget {
                         borderRadius: new BorderRadius.circular(100.0),
                       ),
                     ),
-                    icon: FaIcon(FontAwesomeIcons.google),
-                    label: Text('Sign In with Google'),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () async {
-                      await Auth.signInAnonymous();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xff0369B3),
-                      minimumSize: Size(346, 40),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(100.0),
-                      ),
-                    ),
-                    icon: FaIcon(FontAwesomeIcons.user),
-                    label: Text('Sign In as Guest'),
+                    child: Text('Get OTP Number'),
                   ),
                   Spacer(),
                 ],
@@ -125,7 +120,7 @@ class SignInScreen extends StatelessWidget {
             ),
           ),
         ]
-      )
+      ),
     );
   }
 }

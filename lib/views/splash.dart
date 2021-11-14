@@ -9,13 +9,14 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  Timer timer = Timer(const Duration(seconds: 5), () {});
-
   @override
   void initState() {
     super.initState();
+    _navigationRoute();
+  }
 
-    timer = new Timer(const Duration(seconds: 5), () {
+  _navigationRoute() async {
+    await Future.delayed(Duration(seconds: 5), () {
       Navigator.pushNamedAndRemoveUntil(
           context, GETTING_STARTED, (route) => false);
     });

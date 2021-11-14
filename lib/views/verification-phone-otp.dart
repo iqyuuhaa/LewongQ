@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pinput/pin_put/pin_put.dart';
 
 import 'package:lewong_q_app/services/auth.dart';
-import 'package:lewong_q_app/routes/routes.dart';
+import 'package:lewong_q_app/models/verification-phone.dart';
 
-class SignInScreen extends StatelessWidget {
+class VerificationPhoneOTP extends StatefulWidget {
+  const VerificationPhoneOTP({ Key? key }) : super(key: key);
+
+  @override
+  _VerificationPhoneOTPState createState() => _VerificationPhoneOTPState();
+}
+
+class _VerificationPhoneOTPState extends State<VerificationPhoneOTP> {
   double getSmallestDiameter(BuildContext context) =>
       MediaQuery.of(context).size.width * 2 / 3;
   double getBiggestDiameter(BuildContext context) =>
@@ -12,6 +19,17 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as VerificationPhoneArguments;
+    String _phone = args.phone;
+    String _verificationId = args.verificationId;
+
+    final _pinPutController = TextEditingController();
+    final _pinPutFocusNode = FocusNode();
+    final BoxDecoration pinPutDecoration = BoxDecoration(
+      color: Color.fromRGBO(235, 236, 237, 1),
+      borderRadius: BorderRadius.circular(5.0),
+    );
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -62,62 +80,54 @@ class SignInScreen extends StatelessWidget {
           Container(
             child: Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Spacer(),
-                  new Image.asset('assets/logo.png'),
                   Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 25,),
                     child: Text(
-                      'Welcome to LewongQ',
+                      'Verify OTP Number',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.pushNamed(context, SIGN_IN_WITH_PHONE);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xff0369B3),
-                      minimumSize: Size(346, 40),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(100.0),
-                      ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10,),
+                    child: Center(
+                      child: Text('Insert OTP number'),
                     ),
-                    icon: FaIcon(FontAwesomeIcons.phone),
-                    label: Text('Sign In with Phone Number'),
                   ),
-                  ElevatedButton.icon(
-                    onPressed: () async {
-                      await Auth.signInWithGoogle();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xff0369B3),
-                      minimumSize: Size(346, 40),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(100.0),
+                  Padding(
+                    padding: EdgeInsets.all(30),
+                    child: PinPut(
+                      fieldsCount: 6,
+                      fieldsAlignment: MainAxisAlignment.spaceAround,
+                      textStyle: const TextStyle(fontSize: 25.0, color: Colors.black),
+                      eachFieldMargin: EdgeInsets.all(0),
+                      eachFieldWidth: 45.0,
+                      eachFieldHeight: 55.0,
+                      focusNode: _pinPutFocusNode,
+                      controller: _pinPutController,
+                      submittedFieldDecoration: pinPutDecoration,
+                      onSubmit: (String pin) async {
+                        try {
+                          await Auth.signInWithPhoneNumber(_verificationId, pin);
+                        } catch (e) {
+                          FocusScope.of(context).unfocus();
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid OTP'),),);
+                        }
+                      },
+                      selectedFieldDecoration: pinPutDecoration.copyWith(
+                        color: Colors.white,
+                        border: Border.all(
+                          width: 2,
+                          color: Color.fromRGBO(160, 215, 220, 1),
+                        ),
                       ),
+                      followingFieldDecoration: pinPutDecoration,
+                      pinAnimationType: PinAnimationType.scale,
                     ),
-                    icon: FaIcon(FontAwesomeIcons.google),
-                    label: Text('Sign In with Google'),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () async {
-                      await Auth.signInAnonymous();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xff0369B3),
-                      minimumSize: Size(346, 40),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(100.0),
-                      ),
-                    ),
-                    icon: FaIcon(FontAwesomeIcons.user),
-                    label: Text('Sign In as Guest'),
                   ),
                   Spacer(),
                 ],
@@ -125,7 +135,7 @@ class SignInScreen extends StatelessWidget {
             ),
           ),
         ]
-      )
+      ),
     );
   }
 }
