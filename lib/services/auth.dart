@@ -58,10 +58,10 @@ class Auth {
         },
         timeout: Duration(seconds: 60)
       );
-    }
 
-    if (verificationCode != '') {
-      return verificationCode;
+      if (verificationCode != '') {
+        return verificationCode;
+      }
     }
   }
 
@@ -86,5 +86,3 @@ class Auth {
   }
   // /Sign Out Method
 }
-
-class UninitializedAuth extends Auth {}

@@ -35,60 +35,6 @@ class _IndexScreenState extends State<IndexScreen> {
 
     return Scaffold(
       extendBody: true,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(200),
-        child: AppBar(
-          shape: RoundedRectangleBorder(
-            borderRadius: index == 0
-              ? BorderRadius.only(
-                  bottomLeft: Radius.circular(50),
-                  bottomRight: Radius.circular(50),
-                )
-              : BorderRadius.only(
-                  bottomLeft: Radius.circular(50),
-                ),
-          ),
-          flexibleSpace: ClipRRect(
-            child: Stack(
-              children: <Widget>[
-                ShaderMask(
-                  blendMode: BlendMode.dstIn,
-                  shaderCallback: (retangle) {
-                    return LinearGradient(
-                      colors: [Color.fromRGBO(0, 17, 76, 1), Colors.transparent],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ).createShader(Rect.fromLTRB(0, 0, retangle.width, retangle.height));
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/app-bar-cover.png'),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: 50,
-                  bottom: 0,
-                  child: Container(
-                    margin: EdgeInsets.all(20),
-                    child: Text(
-                      'Bali',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 35,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
       body: screens[index],
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
@@ -96,7 +42,7 @@ class _IndexScreenState extends State<IndexScreen> {
         ),
         child: CurvedNavigationBar(
           key: navigationKey,
-          color: Color(0xff3f85d3),
+          color: Color.fromRGBO(0, 77, 147, 1),
           backgroundColor: Colors.transparent,
           height: 60,
           index: index,
