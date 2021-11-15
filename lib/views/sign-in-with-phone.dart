@@ -98,7 +98,7 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
                           child: Text('+62'),
                         ),
                       ),
-                    )
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () async {
