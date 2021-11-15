@@ -21,39 +21,43 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
       ),
       body: Container(
         child: Center(
-          child: Column(
+          child: ListView(
             children: <Widget>[
-              Container(
-                width: 100,
-                height: 100,
-                margin: EdgeInsets.only(
-                  top: 30,
-                  bottom: 15,
-                ),
-                child: Stack(
-                  children: <Widget>[
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage('assets/images/user.png'),
+              Column(
+                children: <Widget>[
+                  Container(
+                    width: 100,
+                    height: 100,
+                    margin: EdgeInsets.only(
+                      top: 30,
+                      bottom: 15,
                     ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Container(
-                        width: 25,
-                        height: 25,
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(0, 77, 147, 1),
-                          shape: BoxShape.circle,
+                    child: Stack(
+                      children: <Widget>[
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: AssetImage('assets/images/user.png'),
                         ),
-                        child: Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                          size: 12,
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Container(
+                            width: 25,
+                            height: 25,
+                            decoration: BoxDecoration(
+                              color: Color.fromRGBO(0, 77, 147, 1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                              size: 12,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               Padding(
                 padding: EdgeInsets.all(30),
@@ -61,12 +65,12 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                   children: <Widget>[
                     TextField(
                       controller: _nameController,
+                      maxLength: 50,
                       decoration: InputDecoration(
                         labelText: 'Name',
                         hintText: 'Enter your name',
                       ),
                     ),
-                    SizedBox(height: 20),
                     TextField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -75,7 +79,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                         hintText: 'Enter your email address',
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 15),
                     TextField(
                       maxLength: 12,
                       keyboardType: TextInputType.number,
@@ -89,6 +93,29 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                         ),
                       ),
                     ),
+                    TextField(
+                      maxLength: 100,
+                      keyboardType: TextInputType.number,
+                      controller: _addressController,
+                      decoration: InputDecoration(
+                        labelText: 'Address',
+                        hintText: 'Enter your address',
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 30),
+                      child: ElevatedButton(
+                        child: Text('Edit'),
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xff0369B3),
+                          minimumSize: Size(346, 40),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(100.0),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),

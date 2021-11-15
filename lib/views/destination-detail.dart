@@ -1,79 +1,100 @@
 import 'package:flutter/material.dart';
 
-class DestinationDetail extends StatefulWidget {
-  const DestinationDetail({Key? key, required this.detail}) : super(key: key);
+import 'package:lewong_q_app/models/destination-detail.dart';
 
-  final Map<dynamic, dynamic> detail;
-  @override
-  _DestinationDetailState createState() => _DestinationDetailState();
-}
+class DestinationDetailScreen extends StatelessWidget {
+  const DestinationDetailScreen({ Key? key }) : super(key: key);
 
-class _DestinationDetailState extends State<DestinationDetail> {
   @override
   Widget build(BuildContext context) {
-    final Map<dynamic, dynamic> data = widget.detail;
-    String title = data["title"];
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            pinned: true,
-            expandedHeight: 250.0,
-            flexibleSpace: ClipRRect(
-              child: Stack(
-                children: <Widget>[
-                  ShaderMask(
-                    blendMode: BlendMode.dstIn,
-                    shaderCallback: (retangle) {
-                      return LinearGradient(
-                        colors: [
-                          Color.fromRGBO(0, 17, 76, 1),
-                          Colors.transparent
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ).createShader(
-                          Rect.fromLTRB(0, 0, retangle.width, retangle.height));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/app-bar-cover.png'),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ),
+    final args = ModalRoute.of(context)!.settings.arguments as DestinationDetailArguments;
+    final tag = args.tag;
+
+    return Container(
+      child: Hero(
+        tag: tag,
+        child: Scaffold(
+          body: Stack(
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.475,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage('https://picsum.photos/id/${tag + 500}/1000'),
+                    fit: BoxFit.cover,
                   ),
-                  Positioned(
-                    left: 50,
-                    bottom: 0,
-                    child: Container(
-                      margin: EdgeInsets.all(20),
-                      child: Text(
-                        title,
-                        style: TextStyle(
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: 35,
+                    left: 5,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      IconButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        icon: Icon(
+                          Icons.arrow_back,
                           color: Colors.white,
-                          fontSize: 35,
-                          fontWeight: FontWeight.w700,
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.55,
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20)
+                    ),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Name: Destination Gallery #' + (tag + 1).toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                      Text(
+                        'Uploaded By: Dummy User' + (tag + 1).toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                      Text(
+                        'Descrption: ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                      Text(
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam lacinia leo nisl, nec volutpat tellus aliquam eget.',
+                        maxLines: 6,
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return Container(
-                  child: Text('tes'),
-                );
-              },
-              childCount: 20,
-            ),
-          ),
-        ],
+        )
       ),
     );
   }

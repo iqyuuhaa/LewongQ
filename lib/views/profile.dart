@@ -143,6 +143,33 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 4 / 5,
+                        height: 45,
+                        margin: EdgeInsets.only(top: 15),
+                        padding: EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(223, 241, 255, 1),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Center(
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.folder_special),
+                              SizedBox(width: 12.5),
+                              Text('Bookmark'),
+                              Spacer(),
+                              Icon(Icons.chevron_right),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
                       onTap: () async => await Auth.signOut(),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 4 / 5,

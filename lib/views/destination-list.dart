@@ -1,140 +1,158 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lewong_q_app/views/destination-detail.dart';
 
-class DestinationList extends StatelessWidget {
-  const DestinationList({Key? key, required this.destination})
-      : super(key: key);
+import 'package:lewong_q_app/models/destination-detail.dart';
+import 'package:lewong_q_app/routes/routes.dart';
 
-  final List<Map> destination;
+class DestinationListScreen extends StatelessWidget {
+  const DestinationListScreen({Key? key}) : super(key: key);
+
+  Widget buildContent() => SliverToBoxAdapter(
+    child: Container(
+      padding: EdgeInsets.only(
+        left: 20,
+        right: 20,
+        bottom: 35,
+      ),
+      child: GridView.builder(
+        itemCount: 2,
+        primary: false,
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 9 / 14,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10
+        ),
+        itemBuilder: (BuildContext context, int index) {
+          return Hero(
+            tag: index,
+            child: GestureDetector(
+              onTap: () => Navigator.pushNamed(
+                context,
+                DESTINATION_DETAIL,
+                arguments: DestinationDetailArguments(index),
+              ),
+              child: Container(
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                child: Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            "https://picsum.photos/id/${index + 500}/1000",
+                            fit: BoxFit.fill,
+                            width: 142,
+                            height: 142,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Title',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: FaIcon(FontAwesomeIcons.bookmark),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8, right: 8),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'Description',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(200),
-        child: AppBar(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(50),
-            ),
-          ),
-          flexibleSpace: ClipRRect(
-            child: Stack(
-              children: <Widget>[
-                ShaderMask(
-                  blendMode: BlendMode.dstIn,
-                  shaderCallback: (retangle) {
-                    return LinearGradient(
-                      colors: [
-                        Color.fromRGBO(0, 17, 76, 1),
-                        Colors.transparent
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ).createShader(
-                        Rect.fromLTRB(0, 0, retangle.width, retangle.height));
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/app-bar-cover.png'),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: 50,
-                  bottom: 0,
-                  child: Container(
-                    margin: EdgeInsets.all(20),
-                    child: Text(
-                      'Bali',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 35,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      extendBody: true,
       body: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          return GridView.count(
-            childAspectRatio: ((size.width / 2) / (size.height / 3)),
-            crossAxisCount: 2,
-            padding: EdgeInsets.only(top: 24, left: 20, right: 20),
-            children: viewContent(context),
+          return CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                pinned: true,
+                floating: true,
+                expandedHeight: 200,
+                backgroundColor: Color.fromRGBO(0, 17, 76, 1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(45),
+                  ),
+                ),
+                flexibleSpace: Stack(
+                  children: <Widget>[
+                    ShaderMask(
+                      blendMode: BlendMode.dstIn,
+                      shaderCallback: (retangle) {
+                        return LinearGradient(
+                          colors: [Color.fromRGBO(0, 17, 76, 1), Colors.transparent],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ).createShader(Rect.fromLTRB(0, 0, retangle.width, retangle.height));
+                      },
+                      child: FlexibleSpaceBar(
+                        background: Image.asset(
+                          'assets/images/app-bar-cover.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Center(
+                          child: Text(
+                            'Bali',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 35,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              buildContent(),
+            ],
           );
         },
       ),
     );
-  }
-
-  viewContent(context) {
-    List<Widget> listWidget = [];
-    for (var i = 0; i < destination.length; i++) {
-      var data = destination[i];
-      listWidget.add(new GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => DestinationDetail(detail: data)));
-        },
-        child: Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-          child: Padding(
-            padding: EdgeInsets.only(left: 24, right: 24),
-            child: Column(
-              children: [
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network("http://i.imgur.com/zuG2bGQ.jpg",
-                        fit: BoxFit.fill, height: 142, width: 142)),
-                Padding(
-                  padding: EdgeInsets.only(left: 8),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          data["title"],
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
-                        ),
-                        IconButton(
-                            onPressed: () {},
-                            icon: FaIcon(FontAwesomeIcons.bookmark))
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 8, right: 8),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      data["description"],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ));
-    }
-    return listWidget;
   }
 }
