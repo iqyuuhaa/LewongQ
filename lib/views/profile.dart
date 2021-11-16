@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -27,7 +28,8 @@ class ProfileScreen extends StatelessWidget {
                         children: <Widget>[
                           CircleAvatar(
                             radius: 50,
-                            backgroundImage: AssetImage('assets/images/user.png'),
+                            backgroundImage:
+                                AssetImage('assets/images/user.png'),
                           ),
                           Align(
                             alignment: Alignment.bottomRight,
@@ -89,7 +91,8 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () =>
+                          Navigator.pushNamed(context, CREATE_DESTINATION),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 4 / 5,
                         height: 45,
@@ -143,7 +146,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () => Navigator.pushNamed(context, BOOKMARK),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 4 / 5,
                         height: 45,
