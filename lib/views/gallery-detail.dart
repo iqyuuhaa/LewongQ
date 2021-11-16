@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:lewong_q_app/models/gallery-detail.dart';
+import 'package:lewong_q_app/arguments/gallery-detail.dart';
 
 class GalleryDetailScreen extends StatelessWidget {
   const GalleryDetailScreen({ Key? key }) : super(key: key);
@@ -8,11 +8,10 @@ class GalleryDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as GalleryDetailArguments;
-    final tag = args.tag;
 
     return Container(
       child: Hero(
-        tag: tag,
+        tag: args.tag,
         child: Scaffold(
           body: Stack(
             children: <Widget>[
@@ -21,7 +20,7 @@ class GalleryDetailScreen extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.475,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage('https://picsum.photos/id/${tag + 500}/1000'),
+                    image: NetworkImage(args.picture),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -61,14 +60,14 @@ class GalleryDetailScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Name: Destination Gallery #' + (tag + 1).toString(),
+                        'Name: ' + args.name,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
                         ),
                       ),
                       Text(
-                        'Uploaded By: Dummy User' + (tag + 1).toString(),
+                        'Uploaded By: ' + args.uname,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -82,7 +81,7 @@ class GalleryDetailScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam lacinia leo nisl, nec volutpat tellus aliquam eget.',
+                        args.description,
                         maxLines: 6,
                         style: TextStyle(
                           fontSize: 15,

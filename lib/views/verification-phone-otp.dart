@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 
 import 'package:lewong_q_app/services/auth.dart';
-import 'package:lewong_q_app/models/verification-phone.dart';
+import 'package:lewong_q_app/arguments/verification-phone.dart';
 
 class VerificationPhoneOTP extends StatefulWidget {
   const VerificationPhoneOTP({ Key? key }) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:lewong_q_app/services/auth.dart';
 import 'package:lewong_q_app/routes/routes.dart';
 
 class DestinationScreen extends StatefulWidget {
@@ -166,7 +166,7 @@ class _DestinationScreenState extends State<DestinationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
+        stream: Auth.getStreamUser,
         builder: (context, snapshot) {
           return CustomScrollView(
             slivers: <Widget>[

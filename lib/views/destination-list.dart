@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:lewong_q_app/models/destination-detail.dart';
+import 'package:lewong_q_app/arguments/destination-detail.dart';
 import 'package:lewong_q_app/routes/routes.dart';
 
 class DestinationListScreen extends StatelessWidget {

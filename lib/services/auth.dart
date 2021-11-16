@@ -85,4 +85,6 @@ class Auth {
     _auth.signOut();
   }
   // /Sign Out Method
+
+  static Stream<User?> get getStreamUser => _auth.authStateChanges();
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:lewong_q_app/models/destination-detail.dart';
+import 'package:lewong_q_app/arguments/destination-detail.dart';
 
 class DestinationDetailScreen extends StatelessWidget {
   const DestinationDetailScreen({ Key? key }) : super(key: key);

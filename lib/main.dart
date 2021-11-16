@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
 import 'package:lewong_q_app/routes/routes.dart';
+import 'package:lewong_q_app/services/auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +27,7 @@ class _LewongQAppState extends State<LewongQApp> {
   Widget build(BuildContext context) {
     return StreamProvider.value(
       initialData: null,
-      value: FirebaseAuth.instance.authStateChanges(),
+      value: Auth.getStreamUser,
       child: MaterialApp(
         initialRoute: SPLASH_ROUTE,
         routes: routes,

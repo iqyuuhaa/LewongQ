@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lewong_q_app/routes/routes.dart';
 
 import 'package:lewong_q_app/services/auth.dart';
-import 'package:lewong_q_app/models/verification-phone.dart';
+import 'package:lewong_q_app/arguments/verification-phone.dart';
 
 class SignInWithPhone extends StatefulWidget {
   const SignInWithPhone({ Key? key }) : super(key: key);

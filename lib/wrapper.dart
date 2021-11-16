@@ -15,7 +15,6 @@ class Wrapper extends StatefulWidget {
 class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
-    // User? user = FirebaseAuth.instance.currentUser;
     User? user = Provider.of<User?>(context);
     return user == null ? SignInScreen() : IndexScreen();
   }

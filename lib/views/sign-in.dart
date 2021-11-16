@@ -77,20 +77,20 @@ class SignInScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.pushNamed(context, SIGN_IN_WITH_PHONE);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xff0369B3),
-                      minimumSize: Size(346, 40),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(100.0),
-                      ),
-                    ),
-                    icon: FaIcon(FontAwesomeIcons.phone),
-                    label: Text('Sign In with Phone Number'),
-                  ),
+                  // ElevatedButton.icon(
+                  //   onPressed: () {
+                  //     Navigator.pushNamed(context, SIGN_IN_WITH_PHONE);
+                  //   },
+                  //   style: ElevatedButton.styleFrom(
+                  //     primary: Color(0xff0369B3),
+                  //     minimumSize: Size(346, 40),
+                  //     shape: RoundedRectangleBorder(
+                  //       borderRadius: new BorderRadius.circular(100.0),
+                  //     ),
+                  //   ),
+                  //   icon: FaIcon(FontAwesomeIcons.phone),
+                  //   label: Text('Sign In with Phone Number'),
+                  // ),
                   ElevatedButton.icon(
                     onPressed: () async {
                       await Auth.signInWithGoogle();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
+import 'package:lewong_q_app/services/auth.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({ Key? key }) : super(key: key);
@@ -288,7 +289,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       extendBody: true,
       body: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
+        stream: Auth.getStreamUser,
         builder: (context, snapshot) {
           return CustomScrollView(
             slivers: <Widget>[

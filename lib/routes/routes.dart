@@ -10,6 +10,7 @@ import 'package:lewong_q_app/views/destination-detail.dart';
 import 'package:lewong_q_app/views/gallery-detail.dart';
 import 'package:lewong_q_app/views/change-profile.dart';
 import 'package:lewong_q_app/views/create-destination.dart';
+import 'package:lewong_q_app/views/gallery-list.dart';
 import 'package:lewong_q_app/views/create-gallery.dart';
 import 'package:lewong_q_app/views/bookmark.dart';
 
@@ -25,6 +26,7 @@ const String DESTINATION_DETAIL = "/destination-detail";
 const String GALLERY_DETAIL = "/gallery-detail";
 const String CHANGE_PROFILE = "/change-profile";
 const String CREATE_DESTINATION = "/create-destination";
+const String GALLERY_LIST = "/gallery-list";
 const String CREATE_GALLERY = "/create-gallery";
 const String BOOKMARK = "/bookmark";
 
@@ -41,6 +43,7 @@ final routes = {
   GALLERY_DETAIL: (context) => GalleryDetailScreen(),
   CHANGE_PROFILE: (context) => ChangeProfileScreen(),
   CREATE_DESTINATION: (context) => CreateDestinationScreen(),
+  GALLERY_LIST: (context) => GalleryListScreen(),
   CREATE_GALLERY: (context) => CreateGalleryScreen(),
   BOOKMARK: (context) => BookmarkScreen(),
 };
