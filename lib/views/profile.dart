@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -83,7 +84,7 @@ class ProfileScreen extends StatelessWidget {
                     Visibility(
                       visible: !user.isAnonymous,
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () => Navigator.pushNamed(context, CREATE_DESTINATION),
                         child: Container(
                           width: MediaQuery.of(context).size.width * 4 / 5,
                           height: 45,
@@ -143,7 +144,7 @@ class ProfileScreen extends StatelessWidget {
                     Visibility(
                       visible: !user.isAnonymous,
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () => Navigator.pushNamed(context, BOOKMARK),
                         child: Container(
                           width: MediaQuery.of(context).size.width * 4 / 5,
                           height: 45,
