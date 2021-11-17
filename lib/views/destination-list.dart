@@ -157,9 +157,9 @@ class DestinationListScreen extends StatelessWidget {
                                                         await BookmarkModel.create(
                                                           uid,
                                                           uname,
+                                                          data["picture"],
                                                           data["name"],
                                                           data["description"],
-                                                          data["picture"],
                                                         );
                                                         ScaffoldMessenger.of(context).showSnackBar(
                                                           SnackBar(
@@ -167,6 +167,7 @@ class DestinationListScreen extends StatelessWidget {
                                                           ),
                                                         );
                                                       } catch (e) {
+                                                        print(e.toString());
                                                         FocusScope.of(context).unfocus();
                                                         ScaffoldMessenger.of(context).showSnackBar(
                                                           SnackBar(
