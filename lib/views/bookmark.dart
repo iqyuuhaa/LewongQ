@@ -6,7 +6,6 @@ import 'package:lewong_q_app/models/bookmark.dart';
 import 'package:lewong_q_app/routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class BookmarkScreen extends StatefulWidget {
   const BookmarkScreen({Key? key}) : super(key: key);
@@ -28,7 +27,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
         title: Text('Bookmark'),
       ),
       body: FutureBuilder<QuerySnapshot<Object?>>(
-          future: BookmarkModel.getUserList(user!.uid),
+          future: BookmarkModel.getUserList(uid),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData &&
                 snapshot.connectionState == ConnectionState.done) {

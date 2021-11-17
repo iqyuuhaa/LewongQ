@@ -14,7 +14,7 @@ class _DestinationScreenState extends State<DestinationScreen> {
   final List<Map<dynamic, dynamic>> destination = <Map<dynamic, dynamic>>[
     {
       'city': 'Bali',
-      'total_destination': '12',
+      'total_destination': '1',
       'img': "https://a.cdn-hotels.com/gdcs/production143/d1112/c4fedab1-4041-4db5-9245-97439472cf2c.jpg",
       'destination': [
         {
@@ -28,7 +28,7 @@ class _DestinationScreenState extends State<DestinationScreen> {
     },
     {
       'city': 'Jawa Timur',
-      'total_destination': '10',
+      'total_destination': '1',
       'img': "https://akcdn.detik.net.id/community/media/visual/2021/02/04/dev-tumpak-sewu-air-terjun-tirai-dari-lumajang.jpeg",
       'destination': [
         {
@@ -49,7 +49,7 @@ class _DestinationScreenState extends State<DestinationScreen> {
     },
     {
       'city': 'Jawa Tengah',
-      'total_destination': '2',
+      'total_destination': '1',
       'img': "https://tempatwisataseru.com/wp-content/uploads/2015/12/Objek-Wisata-Terkenal-Baturaden-di-Purwokerto.jpg",
       'destination': [
         {

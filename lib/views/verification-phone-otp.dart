@@ -20,7 +20,7 @@ class _VerificationPhoneOTPState extends State<VerificationPhoneOTP> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as VerificationPhoneArguments;
-    String _phone = args.phone;
+    // String _phone = args.phone;
     String _verificationId = args.verificationId;
 
     final _pinPutController = TextEditingController();

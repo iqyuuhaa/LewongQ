@@ -73,7 +73,10 @@ class _GalleryListScreenState extends State<GalleryListScreen> {
                           ),
                           Spacer(),
                           IconButton(
-                            onPressed: () => GalleryModel.delete(snapshot.data!.docs[index].id),
+                            onPressed: () {
+                              GalleryModel.delete(snapshot.data!.docs[index].id);
+                              Navigator.pushNamed(context, GALLERY_LIST);
+                            },
                             icon: Icon(
                               Icons.delete_outlined,
                               color: Colors.red,
