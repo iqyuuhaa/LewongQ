@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:lewong_q_app/services/auth.dart';
+import 'package:lewong_q_app/arguments/destination-list.dart';
 import 'package:lewong_q_app/arguments/destination-detail.dart';
 import 'package:lewong_q_app/models/bookmark.dart';
 import 'package:lewong_q_app/models/destination.dart';
@@ -16,6 +17,7 @@ class DestinationListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as DestinationListArguments;
     User? user = Provider.of<User?>(context);
 
     String uid = user!.uid;
@@ -65,7 +67,7 @@ class DestinationListScreen extends StatelessWidget {
                       children: <Widget>[
                         Center(
                           child: Text(
-                            'Bali',
+                            args.destination,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 35,

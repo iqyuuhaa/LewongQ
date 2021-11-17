@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:lewong_q_app/arguments/destination-list.dart';
 import 'package:lewong_q_app/services/auth.dart';
 import 'package:lewong_q_app/routes/routes.dart';
 
@@ -108,7 +109,7 @@ class _DestinationScreenState extends State<DestinationScreen> {
         ),
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
-            onTap: () => Navigator.pushNamed(context, DESTINATION_LIST),
+            onTap: () => Navigator.pushNamed(context, DESTINATION_LIST, arguments: DestinationListArguments(destination[index]['city'])),
             child: Container(
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
               child: Padding(
