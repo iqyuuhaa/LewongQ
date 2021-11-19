@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lewong_q_app/models/destination.dart';
+import 'package:lewong_q_app/models/gallery.dart';
+import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:lewong_q_app/services/auth.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({ Key? key }) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -32,257 +37,329 @@ class _HomeScreenState extends State<HomeScreen> {
     "https://cdn.pixabay.com/photo/2013/10/02/23/03/mountains-190055__340.jpg",
   ];
 
-  Widget buildContent() => SliverList(
-    delegate: SliverChildListDelegate(
-      [
-        Container(
-          padding: EdgeInsets.only(
-            top: 20,
-            left: 20,
-            right: 20,
-            bottom: 35,
-          ),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Our Destination',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17.5,
+  Widget buildContent() {
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          Container(
+            padding: EdgeInsets.only(
+              top: 20,
+              left: 20,
+              right: 20,
+              bottom: 35,
+            ),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Our Destination',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17.5,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              CarouselSlider(
-                options: CarouselOptions(
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: false,
-                  autoPlay: false,
-                  aspectRatio: 2.0,
-                ),
-                items: destinationList.map((e) => ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      Image.network(
-                        e,
-                        width: 1000,
-                        height: 200,
-                        fit: BoxFit.cover,
-                      ),
-                      Positioned(
-                        bottom: 0.0,
-                        left: 0.0,
-                        right: 0.0,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromARGB(200, 0, 0, 0),
-                                Color.fromARGB(0, 0, 0, 0),
-                              ],
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                            ),
+                FutureBuilder<QuerySnapshot<Object?>>(
+                    future: DestinationModel.getAll(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData &&
+                          snapshot.connectionState == ConnectionState.done) {
+                        int _dataLength = 0;
+
+                        _dataLength = snapshot.data!.docs.length;
+
+                        List<Map<String, dynamic>> data = [];
+
+                        for (var i = 0; i < _dataLength; i++) {
+                          data.add(snapshot.data!.docs[i].data());
+                        }
+
+                        return CarouselSlider(
+                          options: CarouselOptions(
+                            enlargeCenterPage: true,
+                            enableInfiniteScroll: false,
+                            autoPlay: false,
+                            aspectRatio: 2.0,
                           ),
-                          padding: EdgeInsets.symmetric(
-                            vertical: 10.0,
-                            horizontal: 20.0,
-                          ),
-                          child: Text(
-                            'Test',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )).toList(),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(30),
-          color: Color.fromRGBO(223, 241, 255, 1),
-          child: Align(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(right: 20),
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 5),
-                        child: Text(
-                          'Event',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "Let's follow the \nevent in a variety of \nhistoric sites.",
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: ListView(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.only(top: 0),
-                    children: <Widget>[
-                      CarouselSlider(
-                        options: CarouselOptions(
-                          enlargeCenterPage: true,
-                          enableInfiniteScroll: false,
-                          autoPlay: false,
-                          aspectRatio: 2.0,
-                        ),
-                        items: eventList.map((e) => ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: <Widget>[
-                              Image.network(
-                                e,
-                                width: 1000,
-                                height: 200,
-                                fit: BoxFit.cover,
-                              ),
-                              Positioned(
-                                bottom: 0.0,
-                                left: 0.0,
-                                right: 0.0,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromARGB(200, 0, 0, 0),
-                                        Color.fromARGB(0, 0, 0, 0),
+                          items: data
+                              .map((e) => ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Stack(
+                                      fit: StackFit.expand,
+                                      children: <Widget>[
+                                        Image.network(
+                                          e['picture'],
+                                          width: 1000,
+                                          height: 200,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        Positioned(
+                                          bottom: 0.0,
+                                          left: 0.0,
+                                          right: 0.0,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  Color.fromARGB(200, 0, 0, 0),
+                                                  Color.fromARGB(0, 0, 0, 0),
+                                                ],
+                                                begin: Alignment.bottomCenter,
+                                                end: Alignment.topCenter,
+                                              ),
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: 10.0,
+                                              horizontal: 20.0,
+                                            ),
+                                            child: Text(
+                                              e['name'],
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
-                                      begin: Alignment.bottomCenter,
-                                      end: Alignment.topCenter,
                                     ),
-                                  ),
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: 10.0,
-                                    horizontal: 20.0,
-                                  ),
-                                  child: Text(
-                                    'Test',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )).toList(),
-                      ),
-                    ],
-                  ),
-                ),
+                                  ))
+                              .toList(),
+                        );
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    }),
               ],
             ),
           ),
-        ),
-        Container(
-          padding: EdgeInsets.only(
-            top: 20,
-            left: 20,
-            right: 20,
-            bottom: 95,
-          ),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Gallery',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17.5,
-                    ),
-                  ),
-                ),
-              ),
-              CarouselSlider(
-                options: CarouselOptions(
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: false,
-                  autoPlay: false,
-                  aspectRatio: 2.0,
-                ),
-                items: galleryList.map((e) => ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      Image.network(
-                        e,
-                        width: 1000,
-                        height: 200,
-                        fit: BoxFit.cover,
-                      ),
-                      Positioned(
-                        bottom: 0.0,
-                        left: 0.0,
-                        right: 0.0,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromARGB(200, 0, 0, 0),
-                                Color.fromARGB(0, 0, 0, 0),
-                              ],
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                            ),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            vertical: 10.0,
-                            horizontal: 20.0,
-                          ),
+          Container(
+            padding: EdgeInsets.all(30),
+            color: Color.fromRGBO(223, 241, 255, 1),
+            child: Align(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(right: 20),
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 5),
                           child: Text(
-                            'Test',
+                            'Event',
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                        Text(
+                          "Let's follow the \nevent in a variety of \nhistoric sites.",
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                )).toList(),
+                  Expanded(
+                    child: ListView(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.only(top: 0),
+                      children: <Widget>[
+                        FutureBuilder<QuerySnapshot<Object?>>(
+                            future: DestinationModel.getAll(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasData &&
+                                  snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                int _dataLength = 0;
+
+                                _dataLength = snapshot.data!.docs.length;
+
+                                List<Map<String, dynamic>> data = [];
+
+                                for (var i = 0; i < _dataLength; i++) {
+                                  data.add(snapshot.data!.docs[i].data());
+                                }
+                                return CarouselSlider(
+                                  options: CarouselOptions(
+                                    enlargeCenterPage: true,
+                                    enableInfiniteScroll: false,
+                                    autoPlay: false,
+                                    aspectRatio: 2.0,
+                                  ),
+                                  items: data
+                                      .map((e) => ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: Stack(
+                                              fit: StackFit.expand,
+                                              children: <Widget>[
+                                                Image.network(
+                                                  e['picture'],
+                                                  width: 1000,
+                                                  height: 200,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                                Positioned(
+                                                  bottom: 0.0,
+                                                  left: 0.0,
+                                                  right: 0.0,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                        colors: [
+                                                          Color.fromARGB(
+                                                              200, 0, 0, 0),
+                                                          Color.fromARGB(
+                                                              0, 0, 0, 0),
+                                                        ],
+                                                        begin: Alignment
+                                                            .bottomCenter,
+                                                        end:
+                                                            Alignment.topCenter,
+                                                      ),
+                                                    ),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      vertical: 10.0,
+                                                      horizontal: 20.0,
+                                                    ),
+                                                    child: Text(
+                                                      e['name'],
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ))
+                                      .toList(),
+                                );
+                              } else {
+                                return CircularProgressIndicator();
+                              }
+                            }),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ],
-    ),
-  );
+          Container(
+            padding: EdgeInsets.only(
+              top: 20,
+              left: 20,
+              right: 20,
+              bottom: 95,
+            ),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Gallery',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17.5,
+                      ),
+                    ),
+                  ),
+                ),
+                FutureBuilder<QuerySnapshot<Object?>>(
+                    future: GalleryModel.getAll(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData &&
+                          snapshot.connectionState == ConnectionState.done) {
+                        int _dataLength = 0;
+
+                        _dataLength = snapshot.data!.docs.length;
+
+                        List<Map<String, dynamic>> data = [];
+
+                        for (var i = 0; i < _dataLength; i++) {
+                          data.add(snapshot.data!.docs[i].data());
+                        }
+                        return CarouselSlider(
+                          options: CarouselOptions(
+                            enlargeCenterPage: true,
+                            enableInfiniteScroll: false,
+                            autoPlay: false,
+                            aspectRatio: 2.0,
+                          ),
+                          items: data
+                              .map((e) => ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Stack(
+                                      fit: StackFit.expand,
+                                      children: <Widget>[
+                                        Image.network(
+                                          e['picture'],
+                                          width: 1000,
+                                          height: 200,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        Positioned(
+                                          bottom: 0.0,
+                                          left: 0.0,
+                                          right: 0.0,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  Color.fromARGB(200, 0, 0, 0),
+                                                  Color.fromARGB(0, 0, 0, 0),
+                                                ],
+                                                begin: Alignment.bottomCenter,
+                                                end: Alignment.topCenter,
+                                              ),
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: 10.0,
+                                              horizontal: 20.0,
+                                            ),
+                                            child: Text(
+                                              e['name'],
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ))
+                              .toList(),
+                        );
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    }),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -310,10 +387,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       blendMode: BlendMode.dstIn,
                       shaderCallback: (retangle) {
                         return LinearGradient(
-                          colors: [Color.fromRGBO(0, 17, 76, 1), Colors.transparent],
+                          colors: [
+                            Color.fromRGBO(0, 17, 76, 1),
+                            Colors.transparent
+                          ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                        ).createShader(Rect.fromLTRB(0, 0, retangle.width, retangle.height));
+                        ).createShader(Rect.fromLTRB(
+                            0, 0, retangle.width, retangle.height));
                       },
                       child: FlexibleSpaceBar(
                         background: Image.asset(
