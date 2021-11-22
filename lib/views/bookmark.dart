@@ -88,7 +88,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                                         Text(
                                           data["name"],
                                           style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 15,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),

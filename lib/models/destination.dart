@@ -11,12 +11,13 @@ class DestinationModel {
   static Future<void> create(
       String uid,
       String uname,
-      File? imageFile,
       String name,
+      String province,
       String description,
       String city,
       String address,
-      String maps) async {
+      String maps,
+      File? imageFile,) async {
     String filename = basename(imageFile!.path);
 
     Reference ref =
@@ -30,6 +31,7 @@ class DestinationModel {
       'uname': uname,
       'picture': urlDownload,
       'name': name,
+      'province': province,
       'description': description,
       'address': address,
       'city': city,
@@ -41,8 +43,15 @@ class DestinationModel {
     return await collectionReference.get();
   }
 
-  static Future<QuerySnapshot<Object?>> getUserList(String uid) async {
-    return await collectionReference.where('uid', isEqualTo: uid).get();
+  static Future<QuerySnapshot<Object?>> getGrouppedDestination(String province) async {
+    return await collectionReference.where('province', isEqualTo: province).get();
+  }
+
+  static Future<String> getTotalDestination(String province) async {
+    var querySnapshot = await collectionReference.where('province', isEqualTo: province).get();
+    var totalEquals = querySnapshot.docs.length;
+
+    return totalEquals.toString();
   }
 
   static Future<void> delete(String uid) async {

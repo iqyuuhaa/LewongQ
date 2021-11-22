@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:lewong_q_app/arguments/destination-list.dart';
+import 'package:lewong_q_app/models/destination.dart';
 import 'package:lewong_q_app/services/auth.dart';
 import 'package:lewong_q_app/routes/routes.dart';
 
@@ -15,80 +16,31 @@ class _DestinationScreenState extends State<DestinationScreen> {
   final List<Map<dynamic, dynamic>> destination = <Map<dynamic, dynamic>>[
     {
       'city': 'Bali',
-      'total_destination': '1',
       'img': "https://a.cdn-hotels.com/gdcs/production143/d1112/c4fedab1-4041-4db5-9245-97439472cf2c.jpg",
-      'destination': [
-        {
-          'title': 'Kuta',
-          'description': 'Pantai',
-          'address': 'Jl. Kuta',
-          'maps': 'https://goo.gl/maps/Vrwp5bKt9JnGhiF3A',
-          'bookmark': false
-        },
-      ]
     },
     {
       'city': 'Jawa Timur',
-      'total_destination': '1',
       'img': "https://akcdn.detik.net.id/community/media/visual/2021/02/04/dev-tumpak-sewu-air-terjun-tirai-dari-lumajang.jpeg",
-      'destination': [
-        {
-          'title': 'Kuta',
-          'description': 'Pantai',
-          'address': 'Jl. Kuta',
-          'maps': 'https://goo.gl/maps/Vrwp5bKt9JnGhiF3A',
-          'bookmark': false
-        },
-        {
-          'title': 'Kuta',
-          'description': 'Pantai',
-          'address': 'Jl. Kuta',
-          'maps': 'https://goo.gl/maps/Vrwp5bKt9JnGhiF3A',
-          'bookmark': false
-        },
-      ]
     },
     {
       'city': 'Jawa Tengah',
-      'total_destination': '1',
       'img': "https://tempatwisataseru.com/wp-content/uploads/2015/12/Objek-Wisata-Terkenal-Baturaden-di-Purwokerto.jpg",
-      'destination': [
-        {
-          'title': 'Kuta',
-          'description': 'Pantai',
-          'address': 'Jl. Kuta',
-          'maps': 'https://goo.gl/maps/Vrwp5bKt9JnGhiF3A',
-          'bookmark': false
-        },
-        {
-          'title': 'Kuta',
-          'description': 'Pantai',
-          'address': 'Jl. Kuta',
-          'maps': 'https://goo.gl/maps/Vrwp5bKt9JnGhiF3A',
-          'bookmark': false
-        },
-      ]
     },
     {
       'city': 'Jawa Barat',
-      'total_destination': '1',
       'img': "https://c2.staticflickr.com/6/5703/22840840261_d00029c811_b.jpg",
-      'destination': [
-        {
-          'title': 'Kuta',
-          'description': 'Pantai',
-          'address': 'Jl. Kuta',
-          'maps': 'https://goo.gl/maps/Vrwp5bKt9JnGhiF3A',
-          'bookmark': false
-        },
-        {
-          'title': 'Kuta',
-          'description': 'Pantai',
-          'address': 'Jl. Kuta',
-          'maps': 'https://goo.gl/maps/Vrwp5bKt9JnGhiF3A',
-          'bookmark': false
-        },
-      ]
+    },
+    {
+      'city': 'Yogyakarta',
+      'img': "https://cdn-image.hipwee.com/wp-content/uploads/2021/09/hipwee-Yogyakarta_Indonesia_Prambanan-temple-complex-02-360x203.jpg",
+    },
+    {
+      'city': 'Jakarta',
+      'img': "https://anekatempatwisata.com/wp-content/uploads/2021/03/Ancol-300x157.jpg",
+    },
+    {
+      'city': 'Banten',
+      'img': "https://ddalqn946qjoh.cloudfront.net/images/berita/2019/02/Sawarna_ori.jpg",
     },
   ];
 
@@ -145,8 +97,17 @@ class _DestinationScreenState extends State<DestinationScreen> {
                     Padding(
                       padding: EdgeInsets.only(left: 8, right: 8),
                       child: Row(children: [
-                        Text(
-                          destination[index]['total_destination'],
+                        FutureBuilder(
+                          future: DestinationModel.getTotalDestination(destination[index]['city']),
+                          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                            if (snapshot.connectionState == ConnectionState.done) {
+                              return Text(
+                                snapshot.data!
+                              );
+                            }
+
+                            return Text('0');
+                          }
                         ),
                         Text(
                           ' Destination',

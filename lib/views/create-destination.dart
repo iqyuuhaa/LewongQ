@@ -15,7 +15,9 @@ class CreateDestinationScreen extends StatefulWidget {
 }
 
 class _CreateDestinationScreenState extends State<CreateDestinationScreen> {
+  bool isLoading = false;
   File? image;
+  String selectedProvince = 'Bali';
 
   Future pickImage() async {
     try {
@@ -33,17 +35,19 @@ class _CreateDestinationScreenState extends State<CreateDestinationScreen> {
     }
   }
 
-  void submit(uid, uname, name, description, city, address, maps, image) async {
+  void submit(uid, uname, name, province, description, city, address, maps, image) async {
     try {
+      setState(() => isLoading = true);
       await DestinationModel.create(
         uid,
         uname,
-        image,
         name,
+        province,
         description,
         city,
         address,
         maps,
+        image,
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -58,6 +62,7 @@ class _CreateDestinationScreenState extends State<CreateDestinationScreen> {
         ),
       );
     }
+    setState(() => isLoading = false);
   }
 
   @override
@@ -65,6 +70,7 @@ class _CreateDestinationScreenState extends State<CreateDestinationScreen> {
     User? user = Provider.of<User?>(context);
     String uid = user!.uid;
     String uname = user.displayName!;
+
     TextEditingController _cityController = TextEditingController(text: '');
     TextEditingController _titleController = TextEditingController(text: '');
     TextEditingController _descController = TextEditingController(text: '');
@@ -79,10 +85,42 @@ class _CreateDestinationScreenState extends State<CreateDestinationScreen> {
         child: Center(
           child: ListView(
             children: <Widget>[
+              image != null
+                ? Container(
+                  padding: EdgeInsets.only(
+                    top: 20,
+                    left: 20,
+                    right: 20,
+                  ),
+                  child: Image.file(
+                    image!,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
+                )
+                : Container(),
               Padding(
                 padding: EdgeInsets.all(30),
                 child: Column(
                   children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width - 30,
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: selectedProvince,
+                        hint: Text('Province'),
+                        items: <String>['Bali', 'Jawa Timur', 'Jawa Tengah', 'Jawa Barat', 'Yogyakarta', 'Jakarta', 'Banten']
+                          .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        onChanged: (String? value) => setState(() {
+                          selectedProvince = value!;
+                        }),
+                      ),
+                    ),
                     TextField(
                       controller: _titleController,
                       decoration: InputDecoration(
@@ -115,41 +153,59 @@ class _CreateDestinationScreenState extends State<CreateDestinationScreen> {
                       ),
                     ),
                     SizedBox(height: 15),
-                    ElevatedButton.icon(
-                      icon: Icon(Icons.add_photo_alternate_outlined),
-                      label: Text('Upload Image'),
-                      onPressed: () => pickImage(),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xff0369B3),
-                        minimumSize: Size(346, 40),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(100.0),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 15),
                     TextField(
                       controller: _descController,
-                      maxLines: 5,
                       decoration: InputDecoration(
                         labelText: 'Description',
                         hintText: 'Enter destination description',
                       ),
                     ),
+                    SizedBox(height: 15),
                     Padding(
                       padding: EdgeInsets.only(top: 30),
+                      child: ElevatedButton.icon(
+                        icon: Icon(Icons.add_photo_alternate_outlined),
+                        label: Text('Upload Image'),
+                        onPressed: () => pickImage(),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xff0369B3),
+                          minimumSize: Size(346, 40),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(100.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 7.5),
                       child: ElevatedButton(
-                        child: Text('Create'),
+                        child: isLoading
+                          ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(color: Colors.white),
+                              ),
+                              SizedBox(width: 16),
+                              Text('Please wait...'),
+                            ],
+                          )
+                          : Text('Create')
+                        ,
                         onPressed: () {
                           submit(
-                              uid,
-                              uname,
-                              _titleController.text,
-                              _descController.text,
-                              _cityController.text,
-                              _addressController.text,
-                              _mapsLinkController.text,
-                              image);
+                            uid,
+                            uname,
+                            _titleController.text,
+                            selectedProvince,
+                            _descController.text,
+                            _cityController.text,
+                            _addressController.text,
+                            _mapsLinkController.text,
+                            image
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Color(0xff0369B3),

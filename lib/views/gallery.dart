@@ -121,7 +121,10 @@ class _GalleryScreenState extends State<GalleryScreen> {
                         );
                       }
                       return Center(
-                        child: CircularProgressIndicator(),
+                        child: Container(
+                          margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 4),
+                          child: CircularProgressIndicator()
+                        ),
                       );
                     }
                   ),

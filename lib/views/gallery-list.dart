@@ -74,8 +74,23 @@ class _GalleryListScreenState extends State<GalleryListScreen> {
                           Spacer(),
                           IconButton(
                             onPressed: () {
-                              GalleryModel.delete(snapshot.data!.docs[index].id);
-                              Navigator.pushNamed(context, GALLERY_LIST);
+                              try {
+                                GalleryModel.delete(snapshot.data!.docs[index].id);
+                                FocusScope.of(context).unfocus();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Gallery deleted'),
+                                  ),
+                                );
+                              } catch (e) {
+                                FocusScope.of(context).unfocus();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Something wrong! Try Again'),
+                                  ),
+                                );
+                              }
+                              setState(() {});
                             },
                             icon: Icon(
                               Icons.delete_outlined,

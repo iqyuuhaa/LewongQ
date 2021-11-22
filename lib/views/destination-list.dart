@@ -20,8 +20,11 @@ class DestinationListScreen extends StatelessWidget {
     final args = ModalRoute.of(context)!.settings.arguments as DestinationListArguments;
     User? user = Provider.of<User?>(context);
 
-    String uid = user!.uid;
-    String uname = user.displayName!;
+    String uid = '';
+
+    if (user!.isAnonymous == false) {
+      uid = user.uid;
+    }
 
     return Scaffold(
       extendBody: true,
@@ -82,7 +85,7 @@ class DestinationListScreen extends StatelessWidget {
               ),
               SliverToBoxAdapter(
                 child: FutureBuilder<QuerySnapshot<Object?>>(
-                  future: DestinationModel.getAll(),
+                  future: DestinationModel.getGrouppedDestination(args.destination),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData &&
                         snapshot.connectionState == ConnectionState.done) {
@@ -112,7 +115,7 @@ class DestinationListScreen extends StatelessWidget {
                                   DESTINATION_DETAIL,
                                   arguments: DestinationDetailArguments(
                                     index,
-                                    uname,
+                                    data['uname'],
                                     data["description"],
                                     data["name"],
                                     data["picture"],
@@ -139,7 +142,7 @@ class DestinationListScreen extends StatelessWidget {
                                             ),
                                           ),
                                           Padding(
-                                            padding: EdgeInsets.only(left: 8),
+                                            padding: EdgeInsets.only(left: 3, top: !user.isAnonymous ? 0 : 12, right: 3),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Row(
@@ -149,39 +152,42 @@ class DestinationListScreen extends StatelessWidget {
                                                   Text(
                                                     data["name"],
                                                     style: TextStyle(
-                                                      fontSize: 20,
+                                                      fontSize: 15,
                                                       fontWeight: FontWeight.w600,
                                                     ),
                                                   ),
-                                                  IconButton(
-                                                    onPressed: () async {
-                                                      try {
-                                                        await BookmarkModel.create(
-                                                          uid,
-                                                          uname,
-                                                          data["picture"],
-                                                          data["name"],
-                                                          data["description"],
-                                                        );
-                                                        ScaffoldMessenger.of(context).showSnackBar(
-                                                          SnackBar(
-                                                            content: Text('Destination saved'),
-                                                          ),
-                                                        );
-                                                      } catch (e) {
-                                                        print(e.toString());
-                                                        FocusScope.of(context).unfocus();
-                                                        ScaffoldMessenger.of(context).showSnackBar(
-                                                          SnackBar(
-                                                            content: Text('Something wrong! Try Again'),
-                                                          ),
-                                                        );
-                                                      }
-                                                    },
-                                                    icon: FaIcon(
-                                                      FontAwesomeIcons.bookmark,
-                                                      color: Color(0xff3f85d3),
-                                                      size: 16.0,
+                                                  Visibility(
+                                                    visible: !user.isAnonymous,
+                                                    child: IconButton(
+                                                      onPressed: () async {
+                                                        try {
+                                                          await BookmarkModel.create(
+                                                            uid,
+                                                            data['uname'],
+                                                            data["picture"],
+                                                            data["name"],
+                                                            data["description"],
+                                                          );
+                                                          ScaffoldMessenger.of(context).showSnackBar(
+                                                            SnackBar(
+                                                              content: Text('Destination saved'),
+                                                            ),
+                                                          );
+                                                        } catch (e) {
+                                                          print(e.toString());
+                                                          FocusScope.of(context).unfocus();
+                                                          ScaffoldMessenger.of(context).showSnackBar(
+                                                            SnackBar(
+                                                              content: Text('Something wrong! Try Again'),
+                                                            ),
+                                                          );
+                                                        }
+                                                      },
+                                                      icon: FaIcon(
+                                                        FontAwesomeIcons.bookmark,
+                                                        color: Color(0xff3f85d3),
+                                                        size: 16.0,
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
@@ -189,7 +195,7 @@ class DestinationListScreen extends StatelessWidget {
                                             ),
                                           ),
                                           Padding(
-                                            padding: EdgeInsets.only(left: 8, right: 8),
+                                            padding: EdgeInsets.only(left: 3, right: 8),
                                             child: Align(
                                               alignment: Alignment.topLeft,
                                               child: Text(
@@ -209,7 +215,12 @@ class DestinationListScreen extends StatelessWidget {
                       );
                     }
 
-                    return Center(child: CircularProgressIndicator());
+                    return Center(
+                      child: Container(
+                        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 4),
+                        child: CircularProgressIndicator()
+                      ),
+                    );
                   }
                 ),
               )

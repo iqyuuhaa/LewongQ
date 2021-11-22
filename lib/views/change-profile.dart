@@ -131,6 +131,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                             child: ElevatedButton(
                               child: Text('Edit'),
                               onPressed: () async {
+                                setState(() {});
                                 try {
                                   await UsersModel.createOrUpdate(
                                     user.uid,

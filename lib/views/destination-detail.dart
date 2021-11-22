@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:lewong_q_app/arguments/destination-detail.dart';
 
@@ -73,15 +74,30 @@ class DestinationDetailScreen extends StatelessWidget {
                           fontSize: 15,
                         ),
                       ),
-                      Text(
-                        'Location: ' + args.address,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                      GestureDetector(
+                        onTap: () async => await launch(args.maps),
+                        child: Text.rich(
+                          TextSpan(
+                            text: 'Location: ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: args.maps,
+                                style: TextStyle(
+                                  color: Colors.blueAccent,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       Text(
-                        'Descrption: ',
+                        'Description: ',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,

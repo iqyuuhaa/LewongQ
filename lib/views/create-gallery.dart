@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:lewong_q_app/routes/routes.dart';
 import 'package:lewong_q_app/models/gallery.dart';
 
 class CreateGalleryScreen extends StatefulWidget {
@@ -15,6 +14,7 @@ class CreateGalleryScreen extends StatefulWidget {
 }
 
 class _CreateGalleryScreenState extends State<CreateGalleryScreen> {
+  bool isLoading = false;
   File? image;
 
   Future pickImage() async {
@@ -103,9 +103,24 @@ class _CreateGalleryScreenState extends State<CreateGalleryScreen> {
                     Padding(
                       padding: EdgeInsets.only(top: 7.5),
                       child: ElevatedButton(
-                        child: Text('Create'),
+                        child: isLoading
+                          ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(color: Colors.white),
+                              ),
+                              SizedBox(width: 16),
+                              Text('Please wait...'),
+                            ],
+                          )
+                          : Text('Create')
+                        ,
                         onPressed: () async {
                           try {
+                            setState(() => isLoading = true);
                             await GalleryModel.create(
                               uid,
                               uname,
@@ -113,7 +128,6 @@ class _CreateGalleryScreenState extends State<CreateGalleryScreen> {
                               _nameController.text,
                               _descriptionController.text,
                             );
-                            Navigator.pushNamed(context, GALLERY_LIST);
                             FocusScope.of(context).unfocus();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -128,6 +142,7 @@ class _CreateGalleryScreenState extends State<CreateGalleryScreen> {
                               ),
                             );
                           }
+                          setState(() => isLoading = false);
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Color(0xff0369B3),

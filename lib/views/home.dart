@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:lewong_q_app/models/destination.dart';
 import 'package:lewong_q_app/models/gallery.dart';
-import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:lewong_q_app/services/auth.dart';
 
@@ -70,7 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           snapshot.connectionState == ConnectionState.done) {
                         int _dataLength = 0;
 
-                        _dataLength = snapshot.data!.docs.length;
+                        _dataLength = snapshot.data!.docs.length > 4
+                         ? 4
+                         : snapshot.data!.docs.length;
 
                         List<Map<String, dynamic>> data = [];
 
@@ -182,7 +183,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ConnectionState.done) {
                                 int _dataLength = 0;
 
-                                _dataLength = snapshot.data!.docs.length;
+                                _dataLength = snapshot.data!.docs.length > 4
+                                  ? 4
+                                  : snapshot.data!.docs.length;
 
                                 List<Map<String, dynamic>> data = [];
 
@@ -289,7 +292,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           snapshot.connectionState == ConnectionState.done) {
                         int _dataLength = 0;
 
-                        _dataLength = snapshot.data!.docs.length;
+                        _dataLength = snapshot.data!.docs.length > 4
+                         ? 4
+                         : snapshot.data!.docs.length;
 
                         List<Map<String, dynamic>> data = [];
 
